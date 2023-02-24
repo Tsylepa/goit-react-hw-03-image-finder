@@ -1,5 +1,10 @@
 @import-normalize; /* bring in normalize.css styles */
 
+:root {
+  --main-color: #00636c;
+  --btn-hover: #133a3d;
+}
+
 html {
   box-sizing: border-box;
   width: 100vw;

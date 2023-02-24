@@ -3,6 +3,8 @@ import Searchbar from './Searchbar';
 import ImageGallery from 'components/ImageGallery';
 import axios from 'axios';
 import Button from './Button';
+import Modal from './Modal';
+import Loader from './Loader';
 
 class ImageFinder extends Component {
   state = {
@@ -10,6 +12,8 @@ class ImageFinder extends Component {
     page: 1,
     loading: false,
     data: [],
+    modalIsOpen: false,
+    madalImage: '',
   };
 
   handleInput = e => {
@@ -29,13 +33,15 @@ class ImageFinder extends Component {
     });
 
     try {
+      this.setState({ loading: true });
       const {
         data: { hits },
       } = await axios.get(`${BASE_URL}?${searchParams}`);
-
       return hits;
     } catch (error) {
       console.log(error);
+    } finally {
+      this.setState({ loading: false });
     }
   };
 
@@ -49,7 +55,7 @@ class ImageFinder extends Component {
   };
 
   loadMore = async () => {
-    const { page, data } = this.state;
+    const { page } = this.state;
     this.setState({
       page: page + 1,
     });
@@ -67,13 +73,32 @@ class ImageFinder extends Component {
     }
   }
 
+  openModal = image => {
+    this.setState({ modalIsOpen: true, modalImage: image });
+    document.addEventListener('keydown', this.onEscPress);
+  };
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false, modalImage: '' });
+    document.removeEventListener('keydown', this.onEscPress);
+  };
+
+  onEscPress = e => {
+    if (e.key !== 'Escape') return;
+    this.closeModal();
+  };
+
   render() {
-    const { query, page, data } = this.state;
+    const { data, modalIsOpen, modalImage, loading } = this.state;
     return (
       <>
         <Searchbar onSearch={this.onSearch} handleInput={this.handleInput} />
-        <ImageGallery data={data} />
+        <ImageGallery data={data} openModal={this.openModal} />
         {data.length > 0 && <Button loadMore={this.loadMore} />}
+        {modalIsOpen && (
+          <Modal closeModal={this.closeModal} image={modalImage} />
+        )}
+        {loading && <Loader />}
       </>
     );
   }
