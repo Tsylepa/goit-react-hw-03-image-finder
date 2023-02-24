@@ -5,9 +5,7 @@ const ImageGallery = ({ data, openModal }) => (
     {data.map(({ id, webformatURL, largeImageURL }) => {
       return (
         <Item key={id}>
-          <a onClick={() => openModal(largeImageURL)}>
-            <img src={webformatURL} />
-          </a>
+          <img src={webformatURL} onClick={() => openModal(largeImageURL)} />
         </Item>
       );
     })}
