@@ -98,7 +98,7 @@ class ImageFinder extends Component {
         {modalIsOpen && (
           <Modal closeModal={this.closeModal} image={modalImage} />
         )}
-        {<Loader />}
+        {loading && <Loader />}
       </>
     );
   }
