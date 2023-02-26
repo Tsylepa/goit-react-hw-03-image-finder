@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import Searchbar from './Searchbar';
-import ImageGallery from 'components/ImageGallery';
+import ImageGallery from 'components/ImageFinder/ImageGallery';
 import axios from 'axios';
 import Button from './Button';
 import Modal from './Modal';
@@ -22,12 +22,11 @@ class ImageFinder extends Component {
     });
   };
 
-  fetchImages = async () => {
-    const { page, query } = this.state;
+  fetchImages = async (page = this.state.page) => {
     const BASE_URL = 'https://pixabay.com/api';
     const searchParams = new URLSearchParams({
       key: '32917365-5bd31ba6b729a0861d5d37e11',
-      q: query,
+      q: this.state.query,
       page: page,
       per_page: 12,
     });
@@ -47,9 +46,10 @@ class ImageFinder extends Component {
 
   onSearch = async e => {
     e.preventDefault();
+
     this.setState({
       page: 1,
-      data: await this.fetchImages(),
+      data: await this.fetchImages(1),
     });
     window.scrollTo(0, 0);
   };
@@ -98,7 +98,7 @@ class ImageFinder extends Component {
         {modalIsOpen && (
           <Modal closeModal={this.closeModal} image={modalImage} />
         )}
-        {loading && <Loader />}
+        {<Loader />}
       </>
     );
   }
