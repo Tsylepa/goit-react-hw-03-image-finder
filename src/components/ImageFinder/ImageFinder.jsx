@@ -94,7 +94,7 @@ class ImageFinder extends Component {
       <>
         <Searchbar onSearch={this.onSearch} handleInput={this.handleInput} />
         <ImageGallery data={data} openModal={this.openModal} />
-        {data.length > 0 && <Button loadMore={this.loadMore} />}
+        {data.length && <Button loadMore={this.loadMore} />}
         {modalIsOpen && (
           <Modal closeModal={this.closeModal} image={modalImage} />
         )}
