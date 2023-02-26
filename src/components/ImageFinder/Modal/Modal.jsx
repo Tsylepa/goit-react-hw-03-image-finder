@@ -1,4 +1,5 @@
 import { Overlay, Img } from './Modal.styled';
+import PropTypes from 'prop-types';
 
 const Modal = ({ closeModal, image }) => (
   <Overlay
@@ -11,5 +12,10 @@ const Modal = ({ closeModal, image }) => (
     </div>
   </Overlay>
 );
+
+Modal.propTypes = {
+  closeModal: PropTypes.func.isRequired,
+  image: PropTypes.string.isRequired,
+};
 
 export default Modal;
